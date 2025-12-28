@@ -35,7 +35,7 @@ Funciones a desarrollar:
 Ejemplo:
 
     event1 = create_event("Global Meeting", datetime(2024, 9, 10, 10, 0), "UTC")
-    
+
     time_to_event = time_until_event(event)
     print(f"Time until '{event['name']}':", time_to_event)
 
@@ -65,24 +65,58 @@ from typing import Dict, List, Optional
 import pytz
 
 
-def create_event(name: str, datetime_start: datetime, timezone_str: str) -> Dict[str, str]:
+def create_event(
+    name: str, datetime_start: datetime, timezone_str: str
+) -> Dict[str, str | datetime]:
     # Write here your code
-    pass
+    return {
+        "name": name,
+        "datetime_start": pytz.timezone(timezone_str).localize(datetime_start),
+        "timezone": timezone_str,
+    }
 
 
-def time_until_event(event: Dict[str, str]) -> timedelta:
+def time_until_event(event: Dict[str, str | datetime]) -> timedelta:
     # Write here your code
-    pass
+    if not isinstance(event["datetime_start"], datetime):
+        raise TypeError("event['datetime_start'] must be a datetime object")
+    
+    today = datetime.now(pytz.timezone(str(event["timezone"])))
+    return event["datetime_start"] - today
 
 
-def change_event_timezone(event: Dict[str, str], new_timezone_str: str) -> Dict[str, str]:
+def change_event_timezone(
+    event: Dict[str, str | datetime], new_timezone_str: str
+) -> Dict[str, str | datetime]:
     # Write here your code
-    pass
+    if not isinstance(event["datetime_start"], datetime):
+        raise TypeError("event['datetime_start'] must be a datetime object")
+    
+    return {
+        "name": event["name"],
+        "datetime_start": event["datetime_start"].astimezone(pytz.timezone(new_timezone_str)),
+        "timezone": new_timezone_str,
+    }
 
 
-def find_next_event(events: List[Dict[str, str]]) -> Optional[Dict[str, str]]:
+def find_next_event(
+    events: List[Dict[str, str | datetime]],
+) -> Optional[Dict[str, str | datetime]]:
     # Write here your code
-    pass
+    next_event = None
+    min_time = timedelta.max
+    now_utc = datetime.now(pytz.utc)
+    for event in events:
+        if not isinstance(event["datetime_start"], datetime):
+            raise TypeError("event['datetime_start'] must be a datetime object")
+        
+        event_time_utc = event["datetime_start"].astimezone(pytz.utc)
+        if event_time_utc > now_utc:
+            time_diff = event_time_utc - now_utc
+            if time_diff < min_time:
+                min_time = time_diff
+                next_event = event
+    return next_event
 
 
 # Para probar el código, descomenta las siguientes líneas
