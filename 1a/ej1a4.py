@@ -56,27 +56,33 @@ class Task(NamedTuple):
     id: int
     title: str
     status: TaskStatus
-    
-    
+
+
 tasks: Dict[int, Task] = {}
 
 
 def create_task(title: str) -> int:
     # Write here your code
-    pass
+    task_id = len(tasks) + 1
+    tasks[task_id] = Task(id=task_id, title=title, status=TaskStatus.PENDING)
+    return task_id
 
 
 def change_task_status(task_id: int, new_status: TaskStatus) -> bool:
     # Write here your code
-    pass
+    if task_id in tasks:
+        tasks[task_id] = Task(id=task_id, title=tasks[task_id].title, status=new_status)
+        return True
+    return False
 
 
 def list_tasks() -> None:
     # Write here your code
-    pass
+    for task in tasks.values():
+        print(f"ID: {task.id}, Title: {task.title}, Status: {task.status.value}")
 
 
-# Para probar el código, descomenta las siguientes líneas 
+# Para probar el código, descomenta las siguientes líneas
 # if __name__ == "__main__":
 #     id1 = create_task("Learn Python")
 #     id2 = create_task("Read Enum documentation")
