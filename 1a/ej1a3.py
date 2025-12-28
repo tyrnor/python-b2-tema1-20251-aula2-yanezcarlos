@@ -80,7 +80,7 @@ def define_types() -> Tuple[Type[namedtuple], Type[namedtuple]]:
 
 
 def register_loan(
-    loans: dict[Type[namedtuple], list[Type[namedtuple]]],
+    loans: Dict[Type[namedtuple], List[Type[namedtuple]]],
     popularity: Counter,
     user: Type[namedtuple],
     book: Type[namedtuple],
@@ -92,7 +92,7 @@ def register_loan(
 
 
 def register_return(
-    loans: dict[Type[namedtuple], list[Type[namedtuple]]],
+    loans: Dict[Type[namedtuple], List[Type[namedtuple]]],
     user: Type[namedtuple],
     book: Type[namedtuple],
 ) -> bool:
