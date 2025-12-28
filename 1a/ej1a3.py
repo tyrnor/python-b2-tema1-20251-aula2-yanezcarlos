@@ -69,10 +69,10 @@ Salida esperada:
 """
 
 from collections import namedtuple, defaultdict, Counter
-from typing import Tuple, Dict, List, Type
+from typing import Tuple, Dict, List, Type, NamedTuple
 
 
-def define_types() -> Tuple[Type[namedtuple], Type[namedtuple]]:
+def define_types() -> Tuple[Type[NamedTuple], Type[NamedTuple]]:
     # Write here your code
     Book = namedtuple("Book", ["title", "author", "isbn"])
     User = namedtuple("User", ["name", "email"])
@@ -80,10 +80,10 @@ def define_types() -> Tuple[Type[namedtuple], Type[namedtuple]]:
 
 
 def register_loan(
-    loans: Dict[Type[namedtuple], List[Type[namedtuple]]],
+    loans: Dict[Type[NamedTuple], List[Type[NamedTuple]]],
     popularity: Counter,
-    user: Type[namedtuple],
-    book: Type[namedtuple],
+    user: Type[NamedTuple],
+    book: Type[NamedTuple],
 ) -> bool:
     # Write here your code
     loans[user].append(book)
@@ -92,9 +92,9 @@ def register_loan(
 
 
 def register_return(
-    loans: Dict[Type[namedtuple], List[Type[namedtuple]]],
-    user: Type[namedtuple],
-    book: Type[namedtuple],
+    loans: Dict[Type[NamedTuple], List[Type[NamedTuple]]],
+    user: Type[NamedTuple],
+    book: Type[NamedTuple],
 ) -> bool:
     # Write here your code
     if book in loans[user]:
@@ -103,7 +103,7 @@ def register_return(
     return False
 
 
-def most_popular_books(popularity: Counter, N: int = 3) -> List[Tuple[namedtuple, int]]:
+def most_popular_books(popularity: Counter, N: int = 3) -> List[Tuple[NamedTuple, int]]:
     # Write here your code
     return popularity.most_common(N)
 
